@@ -2,9 +2,11 @@ package org.team2839.robot2016.subsystems;
 
 import org.team2839.robot2016.Constants;
 import org.team2839.robot2016.Hardware;
+import org.team2839.robot2016.Subsystems;
 import org.team2839.robot2016.commands.CatapultStopCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -21,12 +23,8 @@ public class CatapultSubsystem extends Subsystem {
     }
     
     public void updateStatus() {
-//    	SmartDashboard.putNumber("Catapult Range (feet)", Hardware.catapultRangeFinder.getFeet());
-//		double volts = Hardware.catapultRangeFinder.getAverageVoltage();
-//		double feet = ((volts - 0.280) / 0.14175) + 2.0;
-//		SmartDashboard.putNumber("Catapult Range (feet)", feet);
-//		SmartDashboard.putNumber("Catapult Range (volts)", volts);
-//		SmartDashboard.putNumber("Catapult Reading", Hardware.catapultMotorPot.pidGet());
+        SmartDashboard.putBoolean("Catapult Ready", Hardware.stopbarTopLimitSwitch.get());
+        SmartDashboard.putBoolean("Catapult Primed", Hardware.stopbarPrimedLimitSwitch.get());
 	}
 
 	public void stop() {
@@ -43,5 +41,16 @@ public class CatapultSubsystem extends Subsystem {
 	
 	public Boolean ready() {
 		return Hardware.stopbarTopLimitSwitch.get();
+	}
+	
+	public void shooterFire() {
+	    // Safety feature!
+	    if (primed() && Subsystems.grabberHinge.isOut()) {
+	        Hardware.stopbarSolenoid.set(true);
+	    }
+	}
+	
+	public void shooterRetract() {
+	    Hardware.stopbarSolenoid.set(false);
 	}
 }

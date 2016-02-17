@@ -5,6 +5,7 @@ import org.team2839.robot2016.Hardware;
 import org.team2839.robot2016.commands.GrabberStopCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -41,6 +42,10 @@ public class GrabberSubsystem extends Subsystem {
     
     public boolean ballIn() {
     	return Hardware.grabberLimitSwitch.get();
+    }
+
+    public void updateStatus() {
+        SmartDashboard.putBoolean("Grabber Switch", Hardware.grabberLimitSwitch.get());
     }
 
 }

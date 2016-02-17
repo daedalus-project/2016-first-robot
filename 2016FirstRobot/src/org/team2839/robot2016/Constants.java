@@ -33,7 +33,7 @@ public class Constants {
 	// CHANGE THESE!!!1
 	
 	
-	public static final double GRABBER_HINGE_SETPOINT_SHOOT = 0.0;
+	public static final double GRABBER_HINGE_SETPOINT_OUT = 0.0;
 	public static final double GRABBER_HINGE_SETPOINT_LOAD = 0.0;
 	
 	
@@ -60,5 +60,20 @@ public class Constants {
 	public static final double STOPBAR_READY_SPEED = -1.0;
 
 	public static final double CATAPULT_SHOOT_DELAY = 0.5;
+
+    public static final double PORTCULLIS_CLAW_P = 1.0;
+    public static final double PORTCULLIS_CLAW_I = 0.0;
+    public static final double PORTCULLIS_CLAW_D = 0.0;
+    public static final double PORTCULLIS_CLAW_F = 0.0;
+
+    public static final double PORTCULLIS_CLAW_ABSOLUTE_TOLERANCE = 0.01;
+
+    public static final double PORTCULLIS_CLAW_MIN_INPUT = 0.0;
+    public static final double PORTCULLIS_CLAW_MAX_INPUT = 5.0;
+
+    public static final double PORTCULLIS_CLAW_MIN_OUTPUT = -1.0;
+    public static final double PORTCULLIS_CLAW_MAX_OUTPUT = 1.0;
+
+    public static final double PORTCULLIS_CLAW_PID_OFFSET = 0.0;
 
 }

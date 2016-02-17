@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class GrabberHingeSubsystem extends PIDSubsystem {
+public class PortcullisClawSubsystem extends PIDSubsystem {
 
-    public GrabberHingeSubsystem() {
-        super("Grabber Hinge", Constants.GRABBER_HINGE_P, Constants.GRABBER_HINGE_I, Constants.GRABBER_HINGE_D,
-                Constants.GRABBER_HINGE_F);
-        setAbsoluteTolerance(Constants.GRABBER_HINGE_ABSOLUTE_TOLERANCE);
+    public PortcullisClawSubsystem() {
+        super("Portcullis Claw", Constants.PORTCULLIS_CLAW_P, Constants.PORTCULLIS_CLAW_I, Constants.PORTCULLIS_CLAW_D,
+                Constants.PORTCULLIS_CLAW_F);
+        setAbsoluteTolerance(Constants.PORTCULLIS_CLAW_ABSOLUTE_TOLERANCE);
         getPIDController().setContinuous(false);
-        getPIDController().setInputRange(Constants.GRABBER_HINGE_MIN_INPUT, Constants.GRABBER_HINGE_MAX_INPUT);
-        getPIDController().setOutputRange(Constants.GRABBER_HINGE_MIN_OUTPUT, Constants.GRABBER_HINGE_MAX_OUTPUT);
+        getPIDController().setInputRange(Constants.PORTCULLIS_CLAW_MIN_INPUT, Constants.PORTCULLIS_CLAW_MAX_INPUT);
+        getPIDController().setOutputRange(Constants.PORTCULLIS_CLAW_MIN_OUTPUT, Constants.PORTCULLIS_CLAW_MAX_OUTPUT);
     }
 
     public void initDefaultCommand() {
@@ -26,7 +26,7 @@ public class GrabberHingeSubsystem extends PIDSubsystem {
     }
 
     protected double returnPIDInput() {
-        return Hardware.grabberHingePot.pidGet() - Constants.GRABBER_HINGE_PID_OFFSET;
+        return Hardware.grabberHingePot.pidGet() - Constants.PORTCULLIS_CLAW_PID_OFFSET;
     }
 
     protected void usePIDOutput(double output) {
@@ -34,7 +34,7 @@ public class GrabberHingeSubsystem extends PIDSubsystem {
     }
 
     public void updateStatus() {
-        SmartDashboard.putNumber("Grabber Hinge", Hardware.grabberHingePot.pidGet());
+        SmartDashboard.putNumber("Portcullis Claw", Hardware.clawPot.pidGet());
     }
 
     public void point(double setpoint) {
@@ -45,9 +45,5 @@ public class GrabberHingeSubsystem extends PIDSubsystem {
     public void stop() {
         enable();
         setSetpointRelative(0.0);
-    }
-
-    public boolean isOut() {
-        return getSetpoint() == Constants.GRABBER_HINGE_SETPOINT_OUT && onTarget();
     }
 }

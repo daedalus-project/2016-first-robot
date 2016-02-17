@@ -25,6 +25,11 @@ public class DriveTrainSubsystem extends Subsystem {
         setDefaultCommand(new DriveStopCommand());
     }
     
+    private double calculateSpeed(double baseSpeed) {
+        double velocity = baseSpeed * polarity;
+        return velocity * Math.abs(velocity);
+    }
+    
     private double getDriveThrottle() {
     	return ((Controls.leftDriveJoystick.getThrottle() * Constants.THROTTLE) + 1.0) / 2.0;
     }
@@ -35,8 +40,8 @@ public class DriveTrainSubsystem extends Subsystem {
     	double leftSpeed  = Controls.leftDriveJoystick.getY() * Constants.TANK_DRIVE_LEFT * throttle;
     	double rightSpeed = Controls.rightDriveJoystick.getY() * Constants.TANK_DRIVE_RIGHT * throttle;
     	
-    	Hardware.driveLeftMotors.set(leftSpeed * polarity);
-    	Hardware.driveRightMotors.set(rightSpeed * polarity);
+    	Hardware.driveLeftMotors.set(calculateSpeed(leftSpeed));
+    	Hardware.driveRightMotors.set(calculateSpeed(rightSpeed));
     }
     
     public void arcadeDrive() {
@@ -50,8 +55,8 @@ public class DriveTrainSubsystem extends Subsystem {
     	rightSpeed += Controls.leftDriveJoystick.getX() * Constants.ARCADE_DRIVE_RIGHT_TURN;
     	rightSpeed *= throttle;
     	
-    	Hardware.driveLeftMotors.set(leftSpeed * polarity);
-    	Hardware.driveRightMotors.set(rightSpeed * polarity);
+    	Hardware.driveLeftMotors.set(calculateSpeed(leftSpeed));
+        Hardware.driveRightMotors.set(calculateSpeed(rightSpeed));
     }
     
     public void gamepadTankDrive() {
@@ -60,8 +65,8 @@ public class DriveTrainSubsystem extends Subsystem {
     	double leftSpeed  = Controls.gamepad.getLeftY() * Constants.GAMEPAD_TANK_DRIVE_LEFT * throttle;
     	double rightSpeed = Controls.gamepad.getRightY() * Constants.GAMEPAD_TANK_DRIVE_RIGHT * throttle;
     	
-    	Hardware.driveLeftMotors.set(leftSpeed * polarity);
-    	Hardware.driveRightMotors.set(rightSpeed * polarity);
+    	Hardware.driveLeftMotors.set(calculateSpeed(leftSpeed));
+        Hardware.driveRightMotors.set(calculateSpeed(rightSpeed));
     }
 
 	public void stop() {
@@ -75,8 +80,8 @@ public class DriveTrainSubsystem extends Subsystem {
 
 	public void updateStatus() {
 		SmartDashboard.putString("Drive Train", this.getCurrentCommand().toString());
-//		SmartDashboard.putNumber("Left Drive", Hardware.driveLeftMotors.get());
-//		SmartDashboard.putNumber("Right Drive", Hardware.driveRightMotors.get());
+		SmartDashboard.putNumber("Left Drive", Hardware.driveLeftMotors.get());
+		SmartDashboard.putNumber("Right Drive", Hardware.driveRightMotors.get());
 	}
     
 }
