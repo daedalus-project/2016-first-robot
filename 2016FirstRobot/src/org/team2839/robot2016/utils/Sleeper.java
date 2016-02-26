@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Sleeper {
 
-	private static HashMap<String, Double> timers;
+	private static HashMap<String, Double> timers = new HashMap<String, Double>();
 
 	public static void startTimer(String timerName, double elapsedTime) {
 		double endTime = (double) (System.currentTimeMillis() / 1000L) + elapsedTime;

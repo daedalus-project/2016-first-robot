@@ -7,34 +7,34 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class GrabberHingePointCommand extends Command {
+public class GrabberHingeOutCommand extends Command {
 
-	private double setpoint;
-	
-    public GrabberHingePointCommand(double setpoint) {
+    public GrabberHingeOutCommand() {
         requires(Subsystems.grabberHinge);
-        this.setpoint = setpoint;
     }
 
+    // Called just before this Command runs the first time
     protected void initialize() {
+        Subsystems.grabberHinge.moveOut();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Subsystems.grabberHinge.point(setpoint);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Subsystems.grabberHinge.isOut();
     }
 
     // Called once after isFinished returns true
     protected void end() {
+        Subsystems.grabberHinge.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        Subsystems.grabberHinge.stop();
     }
 }

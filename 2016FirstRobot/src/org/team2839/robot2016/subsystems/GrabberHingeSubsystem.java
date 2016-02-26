@@ -16,9 +16,6 @@ public class GrabberHingeSubsystem extends PIDSubsystem {
         super("Grabber Hinge", Constants.GRABBER_HINGE_P, Constants.GRABBER_HINGE_I, Constants.GRABBER_HINGE_D,
                 Constants.GRABBER_HINGE_F);
         setAbsoluteTolerance(Constants.GRABBER_HINGE_ABSOLUTE_TOLERANCE);
-        getPIDController().setContinuous(false);
-        getPIDController().setInputRange(Constants.GRABBER_HINGE_MIN_INPUT, Constants.GRABBER_HINGE_MAX_INPUT);
-        getPIDController().setOutputRange(Constants.GRABBER_HINGE_MIN_OUTPUT, Constants.GRABBER_HINGE_MAX_OUTPUT);
     }
 
     public void initDefaultCommand() {
@@ -26,7 +23,7 @@ public class GrabberHingeSubsystem extends PIDSubsystem {
     }
 
     protected double returnPIDInput() {
-        return Hardware.grabberHingePot.pidGet() - Constants.GRABBER_HINGE_PID_OFFSET;
+        return Hardware.grabberHingeEncoder.pidGet();
     }
 
     protected void usePIDOutput(double output) {
@@ -34,20 +31,36 @@ public class GrabberHingeSubsystem extends PIDSubsystem {
     }
 
     public void updateStatus() {
-        SmartDashboard.putNumber("Grabber Hinge", Hardware.grabberHingePot.pidGet());
+        SmartDashboard.putBoolean("Grabber Hinge Out", isOut());
+        SmartDashboard.putBoolean("Grabber Hinge In", isIn());
     }
 
-    public void point(double setpoint) {
-        enable();
-        setSetpoint(setpoint);
+    public void moveOut() {
+        disable();
+        Hardware.grabberHingeMotor.set(Constants.GRABBER_HINGE_OUT_SPEED);
+//        enable();
+//        setSetpoint(Constants.GRABBER_HINGE_OUT_SPEED);
+    }
+    
+    public void moveIn() {
+        disable();
+        Hardware.grabberHingeMotor.set(Constants.GRABBER_HINGE_IN_SPEED);
+//        enable();
+//        setSetpoint(Constants.GRABBER_HINGE_IN_SPEED);
     }
 
     public void stop() {
-        enable();
-        setSetpointRelative(0.0);
+        disable();
+        Hardware.grabberHingeMotor.set(0.0);
+//        enable();
+//        setSetpoint(0.0);
     }
 
     public boolean isOut() {
-        return getSetpoint() == Constants.GRABBER_HINGE_SETPOINT_OUT && onTarget();
+        return Hardware.grabberHingeOutSwitch.get() ^ Constants.GRABBER_HINGE_OUT_SWITCH_XOR;
+    }
+    
+    public boolean isIn() {
+        return Hardware.grabberHingeResetSwitch.get() ^ Constants.GRABBER_HINGE_RESET_SWITCH_XOR;
     }
 }

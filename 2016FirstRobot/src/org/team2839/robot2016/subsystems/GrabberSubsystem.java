@@ -2,7 +2,6 @@ package org.team2839.robot2016.subsystems;
 
 import org.team2839.robot2016.Constants;
 import org.team2839.robot2016.Hardware;
-import org.team2839.robot2016.commands.GrabberStopCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GrabberSubsystem extends Subsystem {
 
     public void initDefaultCommand() {
-        setDefaultCommand(new GrabberStopCommand());
+//        setDefaultCommand(new GrabberStopCommand());
     }
     
     public void stop() {
@@ -41,11 +40,11 @@ public class GrabberSubsystem extends Subsystem {
     }
     
     public boolean ballIn() {
-    	return Hardware.grabberLimitSwitch.get();
+    	return Hardware.grabberLimitSwitch.get() ^ Constants.GRABBER_SWITCH_XOR;
     }
 
     public void updateStatus() {
-        SmartDashboard.putBoolean("Grabber Switch", Hardware.grabberLimitSwitch.get());
+        SmartDashboard.putBoolean("Grabber Switch", ballIn());
     }
 
 }

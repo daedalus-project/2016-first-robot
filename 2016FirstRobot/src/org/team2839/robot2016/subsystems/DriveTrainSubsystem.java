@@ -4,10 +4,10 @@ package org.team2839.robot2016.subsystems;
 import org.team2839.robot2016.Constants;
 import org.team2839.robot2016.Controls;
 import org.team2839.robot2016.Hardware;
-import org.team2839.robot2016.commands.DriveStopCommand;
+import org.team2839.robot2016.commands.DriveGamepadTankCommand;
 
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -16,13 +16,18 @@ public class DriveTrainSubsystem extends Subsystem {
 	
 	private double polarity;
 	
+	private SpeedController leftStickMotor, rightStickMotor;
+	
 	public DriveTrainSubsystem() {
 		super();
 		polarity = 1.0;
+		leftStickMotor = Hardware.driveLeftMotors;
+		rightStickMotor = Hardware.driveRightMotors;
 	}
 
     public void initDefaultCommand() {
-        setDefaultCommand(new DriveStopCommand());
+        setDefaultCommand(new DriveGamepadTankCommand());
+//        setDefaultCommand(new DriveStopCommand());
     }
     
     private double calculateSpeed(double baseSpeed) {
@@ -31,7 +36,8 @@ public class DriveTrainSubsystem extends Subsystem {
     }
     
     private double getDriveThrottle() {
-    	return ((Controls.leftDriveJoystick.getThrottle() * Constants.THROTTLE) + 1.0) / 2.0;
+        return 1.0;
+//    	return ((Controls.leftDriveJoystick.getThrottle() * Constants.THROTTLE) + 1.0) / 2.0;
     }
     
     public void tankDrive() {
@@ -40,8 +46,8 @@ public class DriveTrainSubsystem extends Subsystem {
     	double leftSpeed  = Controls.leftDriveJoystick.getY() * Constants.TANK_DRIVE_LEFT * throttle;
     	double rightSpeed = Controls.rightDriveJoystick.getY() * Constants.TANK_DRIVE_RIGHT * throttle;
     	
-    	Hardware.driveLeftMotors.set(calculateSpeed(leftSpeed));
-    	Hardware.driveRightMotors.set(calculateSpeed(rightSpeed));
+    	leftStickMotor.set(calculateSpeed(leftSpeed));
+    	rightStickMotor.set(calculateSpeed(rightSpeed));
     }
     
     public void arcadeDrive() {
@@ -55,8 +61,8 @@ public class DriveTrainSubsystem extends Subsystem {
     	rightSpeed += Controls.leftDriveJoystick.getX() * Constants.ARCADE_DRIVE_RIGHT_TURN;
     	rightSpeed *= throttle;
     	
-    	Hardware.driveLeftMotors.set(calculateSpeed(leftSpeed));
-        Hardware.driveRightMotors.set(calculateSpeed(rightSpeed));
+    	leftStickMotor.set(calculateSpeed(leftSpeed));
+        rightStickMotor.set(calculateSpeed(rightSpeed));
     }
     
     public void gamepadTankDrive() {
@@ -65,23 +71,26 @@ public class DriveTrainSubsystem extends Subsystem {
     	double leftSpeed  = Controls.gamepad.getLeftY() * Constants.GAMEPAD_TANK_DRIVE_LEFT * throttle;
     	double rightSpeed = Controls.gamepad.getRightY() * Constants.GAMEPAD_TANK_DRIVE_RIGHT * throttle;
     	
-    	Hardware.driveLeftMotors.set(calculateSpeed(leftSpeed));
-        Hardware.driveRightMotors.set(calculateSpeed(rightSpeed));
+    	leftStickMotor.set(calculateSpeed(leftSpeed));
+        rightStickMotor.set(calculateSpeed(rightSpeed));
     }
 
 	public void stop() {
-		Hardware.driveLeftMotors.set(0.0);
-		Hardware.driveRightMotors.set(0.0);
+		leftStickMotor.set(0.0);
+		rightStickMotor.set(0.0);
 	}
 
 	public void switchDrivePolarity() {
-		polarity *= -1.0;
+	    SpeedController temp = leftStickMotor;
+	    leftStickMotor = rightStickMotor;
+	    rightStickMotor = temp;
+//		polarity *= -1.0;
 	}
 
 	public void updateStatus() {
-		SmartDashboard.putString("Drive Train", this.getCurrentCommand().toString());
-		SmartDashboard.putNumber("Left Drive", Hardware.driveLeftMotors.get());
-		SmartDashboard.putNumber("Right Drive", Hardware.driveRightMotors.get());
+		//SmartDashboard.putString("Drive Train", this.getCurrentCommand().toString());
+//		SmartDashboard.putNumber("Left Drive", Hardware.driveLeftMotors.get());
+//		SmartDashboard.putNumber("Right Drive", Hardware.driveRightMotors.get());
 	}
     
 }

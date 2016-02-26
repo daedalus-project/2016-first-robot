@@ -24,7 +24,7 @@ public class PositionalQuadEncoder extends Encoder {
 	
 	@Override
 	public double pidGet() {
-		return 5.0 * (((double) (getDistance() % ticksPerRevolution)) / ((double) ticksPerRevolution));
+		return 5.0 * (((double) Math.floorMod((int) getDistance(), ticksPerRevolution)) / ticksPerRevolution);
 	}
 	
 	@Override

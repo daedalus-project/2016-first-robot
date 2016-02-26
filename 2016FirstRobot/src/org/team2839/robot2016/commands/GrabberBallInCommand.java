@@ -19,24 +19,25 @@ public class GrabberBallInCommand extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if (Subsystems.grabber.ballIn()) {
-			if (!Sleeper.timerRunning("Ball Intake")) {
-				Sleeper.startTimer("Ball Intake", Constants.GRABBER_INTAKE_STOP_DELAY);
-			}
-			return Sleeper.timesUp("Ball Intake");
-		}
-		return false;
+	    return Subsystems.grabber.ballIn();
+//		if (Subsystems.grabber.ballIn()) {
+//			if (!Sleeper.timerRunning("Ball Intake")) {
+//				Sleeper.startTimer("Ball Intake", Constants.GRABBER_INTAKE_STOP_DELAY);
+//			}
+//			return Sleeper.timesUp("Ball Intake");
+//		}
+//		return false;
 	}
 
 	@Override
 	protected void end() {
-		Sleeper.cancelTimer("Ball Intake");
+//		Sleeper.cancelTimer("Ball Intake");
 		Subsystems.grabber.stop();
 	}
 
 	@Override
 	protected void interrupted() {
-		Sleeper.cancelTimer("Ball Intake");
+//		Sleeper.cancelTimer("Ball Intake");
 		Subsystems.grabber.stop();
 	}
 
